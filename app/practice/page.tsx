@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/components/ui";
 import { ALL_AREA_KEYS, areaCard } from "@/lib/mockData";
+import { scoreAnswer } from "@/lib/api";
 import { addToStoryBank } from "@/lib/store";
 import type {
   AreaKey,
@@ -86,16 +87,7 @@ function PracticeRoom() {
     setThinking(true);
 
     try {
-      const res = await fetch("/api/practice", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cardId: card!.key, turn, answer }),
-      });
-      const data = (await res.json()) as {
-        score: PracticeScore;
-        coaching: string;
-        followUp: string;
-      };
+      const data = await scoreAnswer({ cardId: card!.key, turn, answer });
 
       // Attach score to the candidate message.
       setMessages((m) =>

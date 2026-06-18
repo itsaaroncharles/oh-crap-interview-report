@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/components/ui";
 import { INTERVIEW_QUESTIONS } from "@/lib/mockData";
+import { generateReport, scoreAnswer } from "@/lib/api";
 import { useDictation, useTTS } from "@/lib/useSpeech";
 import {
   commitAttempt,
@@ -84,12 +85,7 @@ export default function InterviewPage() {
     };
     if (answer) {
       try {
-        const res = await fetch("/api/practice", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ cardId: q.area, turn: qi, answer }),
-        });
-        const data = await res.json();
+        const data = await scoreAnswer({ cardId: q.area, turn: qi, answer });
         score = data.score;
       } catch {
         /* keep fallback score */
@@ -137,17 +133,12 @@ export default function InterviewPage() {
     const prev = loadLastScore() ?? undefined;
     const a = nextAttempt();
     try {
-      const res = await fetch("/api/interview-report", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          turns: turnsRef.current,
-          attempt: a,
-          input,
-          previousScore: prev,
-        }),
+      const report = await generateReport({
+        turns: turnsRef.current,
+        attempt: a,
+        input,
+        previousScore: prev,
       });
-      const report = await res.json();
       saveInterviewReport(report);
       commitAttempt(a);
       saveLastScore(report.readinessScore);

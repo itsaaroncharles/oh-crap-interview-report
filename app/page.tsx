@@ -103,8 +103,10 @@ export default function Home() {
   return (
     <>
       {/* ---------- HERO ---------- */}
-      <section className="relative overflow-hidden px-5 pt-16 pb-20 grain sm:pt-24">
-        <div className="mesh-hero pointer-events-none absolute inset-0 -z-10" />
+      <section className="relative px-5 pt-16 pb-20 sm:pt-24">
+        {/* Mesh + grain extends up behind the floating navbar so there's no
+            flat band/seam above the hero. */}
+        <div className="mesh-hero grain pointer-events-none absolute inset-x-0 -top-28 bottom-0 -z-10" />
 
         <div className="relative mx-auto max-w-4xl text-center">
           <motion.h1

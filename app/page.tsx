@@ -51,43 +51,47 @@ type Plan = {
 
 const plans: Plan[] = [
   {
-    name: "Free",
+    name: "The mock interview",
     price: "$0",
-    caption: "forever",
-    tag: "Start here",
-    blurb: "See where you stand in one sitting.",
-    points: ["1 full mock interview", "Your readiness score", "Top 2 weak spots"],
+    caption: "free",
+    tag: "Always free",
+    blurb: "Sit the real thing and see where you stand.",
+    points: [
+      "Full spoken mock interview",
+      "Your Oh Crap readiness score",
+      "A summary of your biggest weak spot",
+    ],
     featured: false,
     cta: "Try it free",
     href: "/upload",
   },
   {
-    name: "Prep pass",
-    price: "$19",
-    caption: "one-time",
-    tag: "Most popular",
-    blurb: "Everything you need to walk in ready.",
+    name: "Full report",
+    price: "$9",
+    caption: "per report",
+    tag: "Unlock to improve",
+    blurb: "Turn the summary into a plan, and a higher score.",
     points: [
-      "Unlimited mock interviews",
-      "The full Oh Crap report",
-      "Every practice round",
-      "Score-over-time tracking",
+      "Every weak spot, tied to your work",
+      "A practice round to drill each one",
+      "Re-take to raise your Oh Crap score",
+      "Full transcript, scored answer by answer",
     ],
     featured: true,
-    cta: "Get the Prep pass",
+    cta: "Start a free interview",
     href: "/upload",
   },
   {
     name: "Onsite pack",
-    price: "$39",
-    caption: "one-time",
-    tag: "Going onsite",
-    blurb: "Tuned for a specific company loop.",
+    price: "$24",
+    caption: "3 reports",
+    tag: "Full interview loop",
+    blurb: "Prepping multiple rounds at one company.",
     points: [
-      "Everything in Prep pass",
+      "Three full report unlocks",
       "Company-tuned questions",
       "Story Bank exports",
-      "Priority interviewer voices",
+      "Best value per report",
     ],
     featured: false,
     cta: "Get the Onsite pack",
@@ -289,11 +293,11 @@ export default function Home() {
           <Reveal className="text-center">
             <Eyebrow>Simple pricing</Eyebrow>
             <h2 className="font-display mt-4 text-4xl tracking-tight sm:text-5xl">
-              Pay once. No subscription.
+              Free to try. Pay per report.
             </h2>
             <p className="mx-auto mt-4 max-w-md text-ink-soft">
-              One-time payments. No card kept on file, no surprise renewals.
-              Start free and upgrade only when you&apos;re prepping for real.
+              The mock interview and your score are free. Only pay when you want
+              the full breakdown and the practice to fix it. No subscription.
             </p>
           </Reveal>
 
@@ -306,7 +310,7 @@ export default function Home() {
           </div>
 
           <Reveal className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-ink-faint">
-            {["One-time payment", "No subscription", "Works in your browser", "Nothing recurring"].map((t) => (
+            {["Free mock interview", "Pay per report", "No subscription", "Nothing recurring"].map((t) => (
               <span key={t} className="inline-flex items-center gap-1.5">
                 <Check className="h-3.5 w-3.5 text-accent" /> {t}
               </span>

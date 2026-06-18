@@ -4,10 +4,10 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { Button } from "@/components/ui";
+import { Button, ButtonLink } from "@/components/ui";
 import { ALL_AREA_KEYS, areaCard } from "@/lib/mockData";
 import { scoreAnswer } from "@/lib/api";
-import { addToStoryBank } from "@/lib/store";
+import { addToStoryBank, isCurrentReportUnlocked } from "@/lib/store";
 import type {
   AreaKey,
   PracticeMessage,
@@ -45,7 +45,13 @@ function PracticeRoom() {
   const [turn, setTurn] = useState(0);
   const [thinking, setThinking] = useState(false);
   const [lastScore, setLastScore] = useState<PracticeScore | null>(null);
+  const [locked, setLocked] = useState<boolean | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Gate: practice rounds are part of the paid report.
+  useEffect(() => {
+    setLocked(!isCurrentReportUnlocked());
+  }, []);
 
   // Resolve the area to drill (client-only), seed the opening question.
   useEffect(() => {
@@ -65,7 +71,28 @@ function PracticeRoom() {
     });
   }, [messages, thinking]);
 
-  if (!card) {
+  if (locked) {
+    return (
+      <div className="mx-auto flex min-h-[60vh] max-w-md flex-col items-center justify-center px-5 text-center">
+        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-mist text-ink-faint">
+          <svg viewBox="0 0 20 20" className="h-5 w-5" fill="none">
+            <rect x="4.5" y="9" width="11" height="7.5" rx="1.5" stroke="currentColor" strokeWidth="1.6" />
+            <path d="M7 9V6.5a3 3 0 016 0V9" stroke="currentColor" strokeWidth="1.6" />
+          </svg>
+        </span>
+        <h1 className="font-display mt-5 text-2xl">Practice rounds are part of the full report</h1>
+        <p className="mt-2 text-sm text-ink-soft">
+          Unlock your report to drill this area and re-take the interview for a
+          higher score.
+        </p>
+        <ButtonLink href="/report" variant="dark" className="mt-6">
+          Go to my report →
+        </ButtonLink>
+      </div>
+    );
+  }
+
+  if (!card || locked === null) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center text-ink-faint">
         Setting up the room…

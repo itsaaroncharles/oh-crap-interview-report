@@ -77,6 +77,31 @@ export const saveLastScore = (score: number) =>
   write("local", LASTSCORE_KEY, score);
 export const loadLastScore = () => read<number>("local", LASTSCORE_KEY);
 
+// ---- Per-report unlock (mock paywall) ----
+// A report is free to generate; unlocking it (one-time payment) reveals the
+// full breakdown, the practice rounds, and re-takes. Stored by report id so a
+// brand-new interview is locked again.
+
+const UNLOCKED_KEY = "ppt.unlockedReports";
+
+export function isReportUnlocked(id: string | undefined): boolean {
+  if (!id) return false;
+  const ids = read<string[]>("local", UNLOCKED_KEY) ?? [];
+  return ids.includes(id);
+}
+
+export function unlockReport(id: string) {
+  const ids = read<string[]>("local", UNLOCKED_KEY) ?? [];
+  if (!ids.includes(id)) write("local", UNLOCKED_KEY, [...ids, id]);
+}
+
+/** Is the latest interview report unlocked? Used to gate the practice room. */
+export function isCurrentReportUnlocked(): boolean {
+  const report = read<InterviewReport>("session", IREPORT_KEY);
+  if (!report) return true; // no real report (e.g. sample/demo) → don't gate
+  return isReportUnlocked(report.id);
+}
+
 export function loadStoryBank(): SavedAnswer[] {
   if (typeof window === "undefined") return STORY_BANK_SEED;
   const existing = read<SavedAnswer[]>("local", BANK_KEY);

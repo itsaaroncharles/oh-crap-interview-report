@@ -353,7 +353,7 @@ function PlanCard({ plan }: { plan: Plan }) {
       }`}
     >
       {featured && (
-        <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-pill bg-ink px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-cream">
+        <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-pill bg-ink px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-cream">
           {plan.tag}
         </span>
       )}
